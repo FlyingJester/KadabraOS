@@ -1,4 +1,4 @@
-export KERNEL_OBJS=bootstrap.o boot.o kstring.o kterm.o
+export KERNEL_OBJS=bootstrap.o boot.o kstring.o kterm.o kio.o
 
 all: kadabra.bin
 
@@ -12,6 +12,9 @@ boot.o : boot.c
 
 kstring.o : kstring.c
 	$(XCC) $(XCCFLAGS) -c kstring.c -o kstring.o
+
+kio.o : kio.c
+	$(XCC) $(XCCFLAGS) -c kio.c -o kio.o
 
 kterm.o : kterm.c
 	$(XCC) $(XCCFLAGS) -c kterm.c -o kterm.o

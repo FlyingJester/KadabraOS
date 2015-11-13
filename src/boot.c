@@ -2,56 +2,32 @@
 #include "kstring.h"
 #include <stdint.h>
 
-void k_ClearTerminal(struct k_Terminal *term){
-    const uint16_t blank_char = ks_makeVGACharacter(' ', term->color);
-    unsigned i;
-    term->buffer = (void *)0xB8000;
-    for(i = 0; i<VGA_WIDTH * VGA_HEIGHT; i++){
-        term->buffer[i] = blank_char;
-    }
-}
+static const char *license_text1 =
+"\
+Permission to use, copy, modify, and/or distribute this software for any \
+purpose with or without fee is hereby granted, provided that the above \
+copyright notice and this permission notice appear in all copies. \
+";
 
-void k_TerminalInit(struct k_Terminal *term){
-    term->x = term->y = 0;
-    term->color = ks_makeColor(kECPink, kECDarkGray);
-    k_ClearTerminal(term);
-}
-
-void k_TermainPutChar(struct k_Terminal *term, char c){
-    switch(c){
-        case '\n':
-            do{
-                k_TermainPutChar(term, ' ');
-            }while(term->x);
-            break;
-        case '\t':
-            do{
-                k_TermainPutChar(term, ' ');
-            }while(term->x%4);
-            break;
-        default:
-            term->buffer[term->x + (term->y * VGA_WIDTH)] = ks_makeVGACharacter(c, term->color);
-                term->x++;
-                if(term->x >= VGA_WIDTH){
-                    term->x = 0;
-                    term->y++;
-                    if(term->y > VGA_HEIGHT)
-                        term->y = 0;
-                }
-            break;
-    }
-}
-
-void k_TerminalPutString(struct k_Terminal *term, const char *string){
-    const uint64_t len = k_StringLength(string);
-    uint16_t i;
-    for(i = 0; i<len; i++){
-        k_TermainPutChar(term, string[i]);
-    }
-}
+static const char *license_text2 = 
+"\
+THE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES \
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF \
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR \
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES \
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN \
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF \
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\
+";
 
 void k_Main(){
     struct k_Terminal term;
     k_TerminalInit(&term);
-    k_TerminalPutString(&term, "Hello, world!\n");
+    k_TerminalPutStringWordWrap(&term, "Starting Kadabra Operating system version 0.01\n"\
+    "\tCopyright (c) 2015 Martin McDonough\n"\
+    "\t\n");
+    k_TerminalPutStringWordWrap(&term, license_text1);
+    k_TermNewLine(&term);
+    k_TermNewLine(&term);
+    k_TerminalPutStringWordWrap(&term, license_text2);    
 }

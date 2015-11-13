@@ -33,3 +33,12 @@ struct k_Terminal{
 
 #define ks_makeColor(FORE_, BACK_) (FORE_ | (BACK_ << 4))
 #define ks_makeVGACharacter(CHAR_, COLOR_) (((uint16_t)CHAR_) | (((uint16_t)COLOR_) << 8))
+
+void k_TerminalInit(struct k_Terminal *term);
+void k_ClearTerminal(struct k_Terminal *term);
+void k_TerminalPutString(struct k_Terminal *term, const char *string);
+void k_TerminalPutStringWordWrap(struct k_Terminal *term, const char *string);
+void k_TerminalPutChar(struct k_Terminal *term, char c);
+
+/* Semi-private, ensures a new line is printed regardless of word wrap. */
+void k_TermNewLine(struct k_Terminal *term);

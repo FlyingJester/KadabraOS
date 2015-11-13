@@ -9,3 +9,16 @@ ks_strlen:
         i++;
     goto ks_strlen;
 }
+
+k_Bool k_CharIsSpace(char c){
+    switch(c){
+        case '\n':
+        case '\t':
+        case '\r':
+        case '\v':
+        case ' ':
+            return 1;
+        default:
+            return 0;
+    }
+}
