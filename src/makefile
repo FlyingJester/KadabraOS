@@ -1,3 +1,4 @@
+export KERNEL_OBJS=bootstrap.o boot.o kstring.o kterm.o
 
 all: kadabra.bin
 
@@ -8,6 +9,12 @@ bootstrap.o : bootstrap.s
 
 boot.o : boot.c
 	$(XCC) $(XCCFLAGS) -c boot.c -o boot.o
+
+kstring.o : kstring.c
+	$(XCC) $(XCCFLAGS) -c kstring.c -o kstring.o
+
+kterm.o : kterm.c
+	$(XCC) $(XCCFLAGS) -c kterm.c -o kterm.o
 
 kadabra.bin : $(KERNEL_OBJS) linker.ld
 	$(XLINK) $(XLINKFLAGS) -T linker.ld -o kadabra.bin $(KERNEL_OBJS) -L./libgcc.a

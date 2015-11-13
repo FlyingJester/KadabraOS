@@ -8,8 +8,6 @@ export XLINK=x86_64-elf-ld
 export XSTRIP=x86_64-elf-strip
 export XAS=yasm
 
-export KERNEL_OBJS=bootstrap.o boot.o
-
 export XCCFLAGS=-ffreestanding -Wall -Wextra -ansi -pedantic -Werror -m32
 export XLINKFLAGS=-nostdlib -m elf_i386
 export XASFLAGS=-felf32
