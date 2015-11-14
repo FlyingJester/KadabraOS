@@ -14,9 +14,11 @@ export XASFLAGS=-felf32
 export XCXXFLAGS=$(XCCFLAGS) -fno-exceptions -fno-rtti
 
 all:
+	@echo Entering `pwd`/src
 	cd src && $(MAKE) all && cp kadabra.bin ..
+	@echo Leaving `pwd`/src
 
 clean:
 	cd src && $(MAKE) clean
-	rm *.o 
-	rm kadabra.bin
+	@echo Cleaning `pwd`...
+	rm -f kadabra.bin

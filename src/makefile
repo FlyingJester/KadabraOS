@@ -1,4 +1,5 @@
 export KERNEL_OBJS=bootstrap.o boot.o kstring.o kterm.o kio.o
+export KERNEL_LIBS=libkmemory.a
 
 all: kadabra.bin
 
@@ -19,9 +20,17 @@ kio.o : kio.c
 kterm.o : kterm.c
 	$(XCC) $(XCCFLAGS) -c kterm.c -o kterm.o
 
-kadabra.bin : $(KERNEL_OBJS) linker.ld
-	$(XLINK) $(XLINKFLAGS) -T linker.ld -o kadabra.bin $(KERNEL_OBJS) -L./libgcc.a
+libkmemory.a :
+	@echo Entering `pwd`/platform
+	cd platform && $(MAKE) all
+	@echo Leaving `pwd`/platform
+
+kadabra.bin : $(KERNEL_OBJS) $(KERNEL_LIBS) linker.ld
+	$(XLINK) $(XLINKFLAGS) -T linker.ld -o kadabra.bin $(KERNEL_OBJS) $(KERNEL_LIBS) -L./libgcc.a
 
 clean:
-	rm *.o 
-	rm kadabra.bin
+	cd platform && $(MAKE) clean
+	@echo Cleaning `pwd`...
+	rm -f *.o 
+	rm -f $(KERNEL_LIBS) 
+	rm -f kadabra.bin
